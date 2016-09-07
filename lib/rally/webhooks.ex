@@ -17,29 +17,44 @@ defmodule Rallex.Webhooks do
   @moduledoc """
     Manage webhooks in Rally.
   """
+  require Logger
+  alias Rallex.WebhookRequest
+  alias Rallex.Rally
 
   @doc false
-  def start_link(opts // []) do
+  def start_link(opts \\ []) do
     GenServer.start_link(__MODULE__, :ok, opts)
   end
 
   @doc """
     Create a new webhook
   """
-  @spec create_webhook(String.t, Struct.t)
-  def create_webhook(api_key, webhook) do
-
+  @spec create(WebhookRequest.t, String.t) :: {atom, any}
+  def create(webhook, api_key) do
+    GenServer.call(__MODULE__, {:create, webhook, api_key})
   end
 
-  ## Callbacks
+  @doc false
   def init(:ok) do
     {:ok, []}
   end
 
-  def handle_call(args, _from, state) do
-    {:reply, state}
+  @doc false
+  def handle_call({:create, webhook, api_key}, _from, state) do
+    case Rally.create_webhook(webhook, api_key) do
+      {:ok, body} ->
+        {:reply, :ok, state}
+      {:error, body} ->
+        {:reply, :error, state}
+    end
   end
 
+  @doc false
+  def handle_call(args, _from, state) do
+    {:reply,:ok,  state}
+  end
+
+  @doc false
   def handle_case(arg, state) do
     {:noreply, state}
   end

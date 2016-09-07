@@ -12,4 +12,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Rallex.  If not, see <http://www.gnu.org/licenses/>.
-
+defmodule Rallex.WebhookResponse do
+  @type t :: %Rallex.WebhookResponse{created: atom}
+  defstruct created: nil
+end

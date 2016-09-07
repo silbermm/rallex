@@ -19,7 +19,7 @@ defmodule Rallex do
     import Supervisor.Spec, warn: false
 
     children = [
-      worker(Rallex.Webhooks, []),
+      worker(Rallex.Webhooks, [[name: Rallex.Webhooks]]),
     ]
 
     opts = [strategy: :one_for_one, name: Rallex.Supervisor]

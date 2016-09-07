@@ -12,38 +12,58 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Rallex.  If not, see <http://www.gnu.org/licenses/>.
-defmodule Rallyex.Rally do
+defmodule Rallex.Rally do
   require Logger
   @moduledoc """
     Interact with Rally via thier [Lookback API](https://rally1.rallydev.com/analytics/doc/#/manual) and the [Webhook API](https://rally1.rallydev.com/notifications/docs/webhooks)
   """
+  
+  alias Rallex.WebhookRequest
 
   @lookbackurl "https://rally1.rallydev.com/analytics/v2.0/service/rally/workspace/"
-  @webhookurl "https://rally1.rallydev.com/notifications/api/v2"
+  @webhookurl "https://rally1.rallydev.com/notifications/api/v2/webhook"
 
-  #def query(workspace_id, query_str, api_key) do
-    #end
+  def query(workspace_id, query_str, api_key) do
+  end
 
-  #@spec create_webhook(Struct.t, String.t) :: {atom, Map.t}
-  #def create_webhook(webhook, api_key) do
-    #case HTTPoison.post("#{@webhookurl}/", webook, cookie(api_key)) do
-      #{:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        #{:ok, body}
-      #{:ok, response} ->
-        #{:ok, response.body}
-      #{:error, %HTTPoison.Error{reason: reason}} ->
-        #{:error, reason}
-    #end
-  #end
+  @spec create_webhook(WebhookRequest.t, String.t) :: {atom, map}
+  def create_webhook(webhook, api_key) do
+    post_body = Poison.encode!(webhook)
+    case HTTPoison.post(@webhookurl, post_body, [], hackney: cookie(api_key)) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        {:ok, body}
+      {:ok, response} ->
+        {:ok, response.body}
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        Logger.error "error creating webhook"
+        IO.inspect reason
+        {:error, reason}
+    end
+  end
 
- # defp headers(rally_api_key) do
-    #%{
-      #"ZSESSIONID" => rally_api_key
-    #}
-  #end
+  def list_webhooks(webhook_query, api_key) do
+    case HTTPoison.get("#{@webhookurl}?pagesize=#{webhook_query.pagesize}&start=#{webhook_query.start}", [], hackney: cookie(api_key)) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        {:ok, body}
+      {:ok, response} ->
+        {:ok, response.body}
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        {:error, reason}
+    end
+  end
 
-  #defp cookie(rally_api_key) do
-    #hackney: [cookie: ["ZSESSIONID=#{rally_api_key}"]]
-  #end
+  def list_webhooks(api_key) do
+    list_webhooks(20, api_key)
+  end
+
+  defp headers(rally_api_key) do
+    %{
+      "ZSESSIONID" => rally_api_key
+    }
+  end
+
+  defp cookie(rally_api_key) do
+    [cookie: ["ZSESSIONID=#{rally_api_key}"]]
+  end
 
 end

@@ -12,4 +12,15 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Rallex.  If not, see <http://www.gnu.org/licenses/>.
+defmodule Rallex.WebhookRequest do
 
+  @type t :: %Rallex.WebhookRequest{ 
+    AppName: String.t,
+    AppUrl: String.t,
+    Name: String.t,
+    TargetUrl: String.t,
+    ObjectTypes: [String.t],
+    Expressions: [map]}
+  @derive [Poison.Encoder]
+  defstruct AppName: nil, AppUrl: nil, Name: nil, TargetUrl: nil, ObjectTypes: [], Expressions: []
+end
