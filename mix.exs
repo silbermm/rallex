@@ -15,7 +15,9 @@ defmodule Rallex.Mixfile do
      mod: {Rallex, []}]
   end
 
-    defp deps do
-    [{:httpoison, "~> 0.9.0"}]
+  defp deps do
+    [{:httpoison, "~> 0.9.0"},
+     {:mix_test_watch, "~> 0.2", only: :dev}
+    ]
   end
 end
