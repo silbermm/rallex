@@ -2,6 +2,8 @@
 
 Library for interacting with [Rally](https://www.rallydev.com/)
 
+Still very much a work in progress.
+
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
@@ -21,4 +23,12 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
       [applications: [:rallex]]
     end
     ```
+
+## Usage
+
+### Webhooks
+
+
+### Queries
+
 
