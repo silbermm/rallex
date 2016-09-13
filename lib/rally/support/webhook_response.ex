@@ -13,6 +13,27 @@
 # You should have received a copy of the GNU General Public License
 # along with Rallex.  If not, see <http://www.gnu.org/licenses/>.
 defmodule Rallex.WebhookResponse do
-  @type t :: %Rallex.WebhookResponse{created: atom}
-  defstruct created: nil
+  @type t :: %Rallex.WebhookResponse{
+    LastUpdateDate: String.t,
+    Expressions: [map],
+    SubscriptionID: number,
+    _ref: String.t,
+    TargetUrl: String.t,
+    Disabled: bool,
+    Name: String.t,
+    AppName: String.t,
+    CreationDate: String.t,
+    AppUrl: String.t
+  }
+  @derive [Poison.Encoder]
+  defstruct LastUpdateDate: nil,
+    Expressions: [],
+    SubscriptionID: nil,
+    _ref: nil,
+    TargetUrl: nil,
+    Disabled: true,
+    Name: nil,
+    AppName: nil,
+    CreationDate: nil,
+    AppUrl: nil
 end

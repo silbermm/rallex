@@ -17,8 +17,9 @@ defmodule Rallex.Rally do
   @moduledoc """
     Interact with Rally via thier [Lookback API](https://rally1.rallydev.com/analytics/doc/#/manual) and the [Webhook API](https://rally1.rallydev.com/notifications/docs/webhooks)
   """
-  
+
   alias Rallex.WebhookRequest
+  alias Rallex.WebhookResponse
 
   @lookbackurl "https://rally1.rallydev.com/analytics/v2.0/service/rally/workspace/"
   @webhookurl "https://rally1.rallydev.com/notifications/api/v2/webhook"
@@ -36,24 +37,28 @@ defmodule Rallex.Rally do
         {:ok, response.body}
       {:error, %HTTPoison.Error{reason: reason}} ->
         Logger.error "error creating webhook"
-        IO.inspect reason
         {:error, reason}
     end
   end
 
-  def list_webhooks(webhook_query, api_key) do
-    case HTTPoison.get("#{@webhookurl}?pagesize=#{webhook_query.pagesize}&start=#{webhook_query.start}", [], hackney: cookie(api_key)) do
+  @doc """
+    List webhooks for a specific apikey.
+  """
+  @spec list_webhooks(number, number, String.t) :: {atom, map}
+  def list_webhooks(page_size, start_page, api_key) do
+    case HTTPoison.get("#{@webhookurl}?pagesize=#{page_size}&start=#{start_page}", [], hackney: cookie(api_key)) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        {:ok, body}
+        Poison.decode(body, as: %{"Results" => [%WebhookResponse{}]})
+        #{:ok, body}
       {:ok, response} ->
         {:ok, response.body}
       {:error, %HTTPoison.Error{reason: reason}} ->
-        {:error, reason}
+        {:error, %{reason: reason}}
     end
   end
 
   def list_webhooks(api_key) do
-    list_webhooks(20, api_key)
+    list_webhooks(20, 1, api_key)
   end
 
   defp headers(rally_api_key) do
