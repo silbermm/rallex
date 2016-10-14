@@ -12,7 +12,7 @@ defmodule Rallex.Mixfile do
     # Docs
     name: "MyApp",
     source_url: "https://github.com/silbermm/rallex",
-    homepage_url: "http://silbermm.github.io",
+    homepage_url: "https://silbermm.github.io/rallex",
     docs: [main: "Rallex",
           extras: ["README.md"]]]
   end
