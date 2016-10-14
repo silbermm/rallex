@@ -15,7 +15,7 @@
 defmodule Rallex.Rally do
   require Logger
   @moduledoc """
-    Interact with Rally via thier [Lookback API](https://rally1.rallydev.com/analytics/doc/#/manual) and the [Webhook API](https://rally1.rallydev.com/notifications/docs/webhooks)
+    Interact with Rally via their [Lookback API](https://rally1.rallydev.com/analytics/doc/#/manual) and the [Webhook API](https://rally1.rallydev.com/notifications/docs/webhooks)
   """
 
   alias Rallex.WebhookRequest
@@ -37,6 +37,27 @@ defmodule Rallex.Rally do
         {:ok, response.body}
       {:error, %HTTPoison.Error{reason: reason}} ->
         Logger.error "error creating webhook"
+        {:error, reason}
+    end
+  end
+
+  @doc """
+    Delete a webhook based on the `_refurl`
+
+    Returns `{:ok, message}`
+
+    ## Examples
+
+      iex> Rallex.Rally.delete_webhook("https://rally1.rallydev.com/notifications/api/v2/webhook/GUID", "your_api_key_here")
+      {:ok, "Successfully deleted Webhook"}
+
+  """
+  @spec delete_webhook(String.t, String.t) :: {atom, String.t}
+  def delete_webhook(webhook_ref_url, api_key) do
+    case HTTPoison.delete(webhook_ref_url, [], hackney: cookie(api_key)) do
+      {:ok, %HTTPoison.Response{status_code: 200}} ->
+        {:ok, "Successfully deleted Webhook"}
+      {:error, %HTTPoison.Error{reason: reason}} ->
         {:error, reason}
     end
   end
