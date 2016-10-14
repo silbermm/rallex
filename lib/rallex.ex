@@ -13,8 +13,12 @@
 # You should have received a copy of the GNU General Public License
 # along with Rallex.  If not, see <http://www.gnu.org/licenses/>.
 defmodule Rallex do
+  @moduledoc """
+    Library to interact with Rally
+  """
   use Application
 
+  @doc false
   def start(_type, _args) do
     import Supervisor.Spec, warn: false
 
