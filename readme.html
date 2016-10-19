@@ -84,6 +84,26 @@ end</code></pre>
 </h2>
 
 <h3>Webhooks</h3>
+<p>Create a webhook.</p>
+<pre><code class="elixir">  webhook = %Rallex.WebhookRequest{
+    AppName: &quot;My appname&quot;,
+    AppUrl: &quot;https://somepage.tomy.app.com&quot;,
+    Name: &quot;My Great Webhook&quot;,
+    TargetUrl: &quot;https://omepage.tomy.app.com/path&quot;,
+    ObjectTypes: [&quot;HierarchicalRequirement&quot;, &quot;Defect&quot;],
+    Expressions: [ 
+      %{
+        :AttributeName =&gt; &quot;PlanEstimate&quot;,
+        :Operator =&gt;  &quot;&gt;&quot;,
+        :Value =&gt; &quot;18&quot;
+      }
+    ]
+  }
+  case Rallex.Webhooks.create(webhook, &quot;your_api_key&quot;) do
+    {:ok, %Rallex.WebhookResponse{} = response} -&gt; #created
+    {:error, reason} -&gt; #failed
+  end
+</code></pre>
 <h3>Queries</h3>
 
       <footer class="footer">

@@ -70,7 +70,7 @@
 
       
         <section id="moduledoc">
-          <p>  Interact with Rally via their <a href="https://rally1.rallydev.com/analytics/doc/#/manual">Lookback API</a> and the <a href="https://rally1.rallydev.com/notifications/docs/webhooks">Webhook API</a></p>
+          <p>  Utilities for interacting with Rally</p>
 
         </section>
       
@@ -92,38 +92,20 @@
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#create_webhook/2">create_webhook(webhook, api_key)</a>
+    <a href="#cookie/1">cookie(rally_api_key)</a>
   </div>
   
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#delete_webhook/2">delete_webhook(webhook_ref_url, api_key)</a>
-  </div>
-  
-    <div class="summary-synopsis"><p>Delete a webhook based on the <code class="inline">_refurl</code></p>
+    <div class="summary-synopsis"><p>Produces an array formatted for hackney and Rally</p>
 </div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#list_webhooks/1">list_webhooks(api_key)</a>
+    <a href="#headers/1">headers(rally_api_key)</a>
   </div>
   
+    <div class="summary-synopsis"><p>Returns a map with the correct headers for Rally</p>
 </div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#list_webhooks/3">list_webhooks(page_size, start_page, api_key)</a>
-  </div>
-  
-    <div class="summary-synopsis"><p>List webhooks for a specific apikey</p>
-</div>
-  
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#query/3">query(workspace_id, query_str, api_key)</a>
-  </div>
   
 </div>
 
@@ -147,15 +129,15 @@
             </a>
             Functions
           </h1>
-          <div class="detail" id="create_webhook/2">
+          <div class="detail" id="cookie/1">
   
   <div class="detail-header">
-    <a href="#create_webhook/2" class="detail-link" title="Link to this function">
+    <a href="#cookie/1" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">create_webhook(webhook, api_key)</span>
+    <span class="signature">cookie(rally_api_key)</span>
     
-      <a href="https://github.com/silbermm/rallex/blob/master/lib/rally/rally.ex#L31" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/silbermm/rallex/blob/master/lib/rally/rally.ex#L37" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -163,97 +145,23 @@
     
       <div class="specs">
         
-          <pre>create_webhook(<a href="Rallex.WebhookRequest.html#t:t/0">Rallex.WebhookRequest.t</a>, <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>) :: {atom, map}</pre>
+          <pre>cookie(<a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>) :: []</pre>
         
       </div>
     
   </div>
   <section class="docstring">
-    
-  </section>
-</div>
-<div class="detail" id="delete_webhook/2">
-  
-  <div class="detail-header">
-    <a href="#delete_webhook/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">delete_webhook(webhook_ref_url, api_key)</span>
-    
-      <a href="https://github.com/silbermm/rallex/blob/master/lib/rally/rally.ex#L56" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
-     </a>
-    
-    
-    
-      <div class="specs">
-        
-          <pre>delete_webhook(<a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>, <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>) :: {atom, <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>}</pre>
-        
-      </div>
-    
-  </div>
-  <section class="docstring">
-    <p>  Delete a webhook based on the <code class="inline">_refurl</code></p>
-<p>  Returns <code class="inline">{:ok, message}</code></p>
-<p>  ## Examples</p>
-<pre><code class="iex elixir">iex&gt; Rallex.Rally.delete_webhook(&quot;https://rally1.rallydev.com/notifications/api/v2/webhook/GUID&quot;, &quot;your_api_key_here&quot;)
-{:ok, &quot;Successfully deleted Webhook&quot;}</code></pre>
+    <p>  Produces an array formatted for hackney and Rally.</p>
 
   </section>
 </div>
-<div class="detail" id="list_webhooks/1">
+<div class="detail" id="headers/1">
   
   <div class="detail-header">
-    <a href="#list_webhooks/1" class="detail-link" title="Link to this function">
+    <a href="#headers/1" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">list_webhooks(api_key)</span>
-    
-      <a href="https://github.com/silbermm/rallex/blob/master/lib/rally/rally.ex#L81" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
-     </a>
-    
-    
-    
-  </div>
-  <section class="docstring">
-    
-  </section>
-</div>
-<div class="detail" id="list_webhooks/3">
-  
-  <div class="detail-header">
-    <a href="#list_webhooks/3" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">list_webhooks(page_size, start_page, api_key)</span>
-    
-      <a href="https://github.com/silbermm/rallex/blob/master/lib/rally/rally.ex#L69" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
-     </a>
-    
-    
-    
-      <div class="specs">
-        
-          <pre>list_webhooks(number, number, <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>) :: {atom, map}</pre>
-        
-      </div>
-    
-  </div>
-  <section class="docstring">
-    <p>  List webhooks for a specific apikey.</p>
-
-  </section>
-</div>
-<div class="detail" id="query/3">
-  
-  <div class="detail-header">
-    <a href="#query/3" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">query(workspace_id, query_str, api_key)</span>
+    <span class="signature">headers(rally_api_key)</span>
     
       <a href="https://github.com/silbermm/rallex/blob/master/lib/rally/rally.ex#L27" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
@@ -261,9 +169,16 @@
     
     
     
+      <div class="specs">
+        
+          <pre>headers(<a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>) :: %{optional(<a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>) => <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>}</pre>
+        
+      </div>
+    
   </div>
   <section class="docstring">
-    
+    <p>  Returns a map with the correct headers for Rally.</p>
+
   </section>
 </div>
 

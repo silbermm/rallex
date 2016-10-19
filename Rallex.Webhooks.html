@@ -70,7 +70,7 @@
 
       
         <section id="moduledoc">
-          <p>  Manage webhooks in Rally.</p>
+          <p>  Manage webhooks in Rally via thier <a href="https://rally1.rallydev.com/notifications/docs/webhooks">Webhook API</a></p>
 
         </section>
       
@@ -95,7 +95,34 @@
     <a href="#create/2">create(webhook, api_key)</a>
   </div>
   
-    <div class="summary-synopsis"><p>Create a new webhook</p>
+    <div class="summary-synopsis"><p>Create a new webhook. Returns the Webhook that was created</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#delete/2">delete(webhook_ref_url, api_key)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Delete a webhook based on the <code class="inline">_refurl</code></p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#list/1">list(api_key)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>List webhooks for a specific apikey. Defaults to a page size of 20 and the first page</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#list/3">list(page_size, start_page, api_key)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>List webhooks for a specific apikey</p>
 </div>
   
 </div>
@@ -128,7 +155,7 @@
     </a>
     <span class="signature">create(webhook, api_key)</span>
     
-      <a href="https://github.com/silbermm/rallex/blob/master/lib/rally/webhooks.ex#L33" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/silbermm/rallex/blob/master/lib/rally/webhooks.ex#L38" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -136,13 +163,94 @@
     
       <div class="specs">
         
-          <pre>create(<a href="Rallex.WebhookRequest.html#t:t/0">Rallex.WebhookRequest.t</a>, <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>) :: {atom, any}</pre>
+          <pre>create(<a href="Rallex.WebhookRequest.html#t:t/0">Rallex.WebhookRequest.t</a>, <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>) ::
+  {:ok, <a href="Rallex.WebhookResponse.html#t:t/0">Rallex.WebhookResponse.t</a>} |
+  {:error, <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>}</pre>
         
       </div>
     
   </div>
   <section class="docstring">
-    <p>  Create a new webhook</p>
+    <p>  Create a new webhook. Returns the Webhook that was created.</p>
+
+  </section>
+</div>
+<div class="detail" id="delete/2">
+  
+  <div class="detail-header">
+    <a href="#delete/2" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">delete(webhook_ref_url, api_key)</span>
+    
+      <a href="https://github.com/silbermm/rallex/blob/master/lib/rally/webhooks.ex#L49" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>delete(<a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>, <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>) :: {atom, <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>  Delete a webhook based on the <code class="inline">_refurl</code></p>
+<p>  Returns <code class="inline">{:ok, message}</code> or <code class="inline">{:error, reason}</code></p>
+
+  </section>
+</div>
+<div class="detail" id="list/1">
+  
+  <div class="detail-header">
+    <a href="#list/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">list(api_key)</span>
+    
+      <a href="https://github.com/silbermm/rallex/blob/master/lib/rally/webhooks.ex#L65" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>list(<a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>) :: {atom, map}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>  List webhooks for a specific apikey. Defaults to a page size of 20 and the first page.</p>
+
+  </section>
+</div>
+<div class="detail" id="list/3">
+  
+  <div class="detail-header">
+    <a href="#list/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">list(page_size, start_page, api_key)</span>
+    
+      <a href="https://github.com/silbermm/rallex/blob/master/lib/rally/webhooks.ex#L57" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>list(number, number, <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>) :: {atom, map}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>  List webhooks for a specific apikey.</p>
 
   </section>
 </div>
