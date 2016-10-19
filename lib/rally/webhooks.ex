@@ -15,11 +15,16 @@
 defmodule Rallex.Webhooks do
   use GenServer
   @moduledoc """
-    Manage webhooks in Rally.
+    Manage webhooks in Rally via thier [Webhook API](https://rally1.rallydev.com/notifications/docs/webhooks)
+
   """
   require Logger
   alias Rallex.WebhookRequest
+  alias Rallex.WebhookRequest
+  alias Rallex.WebhookResponse
   alias Rallex.Rally
+
+  @webhookurl "https://rally1.rallydev.com/notifications/api/v2/webhook"
 
   @doc false
   def start_link(opts \\ []) do
@@ -27,11 +32,38 @@ defmodule Rallex.Webhooks do
   end
 
   @doc """
-    Create a new webhook
+    Create a new webhook. Returns the Webhook that was created.
   """
-  @spec create(WebhookRequest.t, String.t) :: {atom, any}
+  @spec create(WebhookRequest.t, String.t) :: {:ok, WebhookResponse.t} | {:error, String.t}
   def create(webhook, api_key) do
     GenServer.call(__MODULE__, {:create, webhook, api_key})
+  end
+
+  @doc """
+    Delete a webhook based on the `_refurl`
+
+    Returns `{:ok, message}` or `{:error, reason}`
+
+  """
+  @spec delete(String.t, String.t) :: {atom, String.t}
+  def delete(webhook_ref_url, api_key) do
+    GenServer.call(__MODULE__, {:delete, webhook_ref_url, api_key})
+  end
+
+  @doc """
+    List webhooks for a specific apikey.
+  """
+  @spec list(number, number, String.t) :: {atom, map}
+  def list(page_size, start_page, api_key) do
+    GenServer.call(__MODULE__, {:list, page_size, start_page, api_key})
+  end
+
+  @doc """
+    List webhooks for a specific apikey. Defaults to a page size of 20 and the first page.
+  """
+  @spec list(String.t) :: {atom, map}
+  def list(api_key) do
+    GenServer.call(__MODULE__, {:list, 20, 1, api_key})
   end
 
   @doc false
@@ -41,11 +73,41 @@ defmodule Rallex.Webhooks do
 
   @doc false
   def handle_call({:create, webhook, api_key}, _from, state) do
-    case Rally.create_webhook(webhook, api_key) do
-      {:ok, body} ->
-        {:reply, :ok, state}
-      {:error, body} ->
-        {:reply, :error, state}
+    post_body = Poison.encode!(webhook)
+    case HTTPoison.post(@webhookurl, post_body, [], hackney: Rally.cookie(api_key)) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        #TODO: decode into WebhookResponse
+        response = Poison.decode(body, as: %WebhookResponse{})
+        {:reply, response, state}
+      {:ok, response} ->
+        {:reply, {:error, response.body}, state}
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        Logger.error "error creating webhook"
+        {:reply, {:error, reason}, state}
+    end
+  end
+
+  @doc false
+  def handle_call({:delete, webhook_ref_url, api_key}, _from, state) do
+    case HTTPoison.delete(webhook_ref_url, [], hackney: Rally.cookie(api_key)) do
+      {:ok, %HTTPoison.Response{status_code: 200}} ->
+        {:reply, {:ok, "Successfully deleted Webhook"}, state}
+      {:ok, %HTTPoison.Response{status_code: 401}} ->
+        {:reply, {:error, "unauthorized"}, state}
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        {:reply, {:error, reason}, state}
+    end
+  end
+
+  def handle_call({:list, page_size, start_page, api_key}, _from, state) do
+    case HTTPoison.get("#{@webhookurl}?pagesize=#{page_size}&start=#{start_page}", [], hackney: Rally.cookie(api_key)) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        response = Poison.decode(body, as: %{"Results" => [%WebhookResponse{}]})
+        {:reply, response, state}
+      {:ok, response} ->
+        {:reply, {:ok, response.body}, state}
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        {:reply, {:error, %{reason: reason}}, state}
     end
   end
 
@@ -58,4 +120,5 @@ defmodule Rallex.Webhooks do
   def handle_case(arg, state) do
     {:noreply, state}
   end
+
 end

@@ -28,7 +28,8 @@ defmodule Rallex.Mixfile do
       {:poison, "~> 2.0"},
       {:mix_test_watch, "~> 0.2", only: [:dev, :test]},
       {:dialyxir, "~> 0.3.5", only: [:dev, :test]},
-      {:ex_doc, "~> 0.14", only: :dev}
+      {:ex_doc, "~> 0.14", only: :dev},
+      {:mix_test_watch, "~> 0.2", only: :dev}
     ]
   end
 end

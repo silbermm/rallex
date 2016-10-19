@@ -14,7 +14,7 @@
 # along with Rallex.  If not, see <http://www.gnu.org/licenses/>.
 defmodule Rallex do
   @moduledoc """
-    Library to interact with Rally
+    Library to interact with Rally. Divided into multiple modules: webhooks and lookback.
   """
   use Application
 

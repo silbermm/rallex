@@ -27,6 +27,28 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 ## Usage
 
 ### Webhooks
+Create a webhook.
+  ```
+  webhook = %Rallex.WebhookRequest{
+    AppName: "My appname",
+    AppUrl: "https://somepage.tomy.app.com",
+    Name: "My Great Webhook",
+    TargetUrl: "https://omepage.tomy.app.com/path",
+    ObjectTypes: ["HierarchicalRequirement", "Defect"],
+    Expressions: [ 
+      %{
+        :AttributeName => "PlanEstimate",
+        :Operator =>  ">",
+        :Value => "18"
+      }
+    ]
+  }
+  case Rallex.Webhooks.create(webhook, "your_api_key") do
+    {:ok, %Rallex.WebhookResponse{} = response} -> #created
+    {:error, reason} -> #failed
+  end
+
+  ```
 
 
 ### Queries

@@ -13,6 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with Rallex.  If not, see <http://www.gnu.org/licenses/>.
 defmodule Rallex.WebhookResponse do
+  @moduledoc """
+    Struct for a Wehhook Response - makes dealing with reponses a little easier.
+  """
   @type t :: %Rallex.WebhookResponse{
     LastUpdateDate: String.t,
     Expressions: [map],
@@ -23,7 +26,11 @@ defmodule Rallex.WebhookResponse do
     Name: String.t,
     AppName: String.t,
     CreationDate: String.t,
-    AppUrl: String.t
+    AppUrl: String.t,
+    AppName: String.t,
+    ObjectTypes: [],
+    ObjectUUID: String.t,
+    OwnerID: String.t
   }
   @derive [Poison.Encoder]
   defstruct LastUpdateDate: nil,
@@ -35,5 +42,10 @@ defmodule Rallex.WebhookResponse do
     Name: nil,
     AppName: nil,
     CreationDate: nil,
-    AppUrl: nil
+    AppUrl: nil,
+    AppName: nil,
+    ObjectTypes: [],
+    CreatedBy: nil,
+    ObjectUUID: nil,
+    OwnerID: nil
 end
