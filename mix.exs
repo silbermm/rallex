@@ -7,6 +7,7 @@ defmodule Rallex.Mixfile do
      elixir: "~> 1.3",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     elixirc_paths: elixirc_paths(Mix.env),
      deps: deps(),
 
     # Docs
@@ -32,4 +33,10 @@ defmodule Rallex.Mixfile do
       {:mix_test_watch, "~> 0.2", only: :dev}
     ]
   end
+
+  defp elixirc_paths(:test) do
+      ["lib", "test/support"]
+  end
+  defp elixirc_paths(_), do: ["lib"]
+
 end

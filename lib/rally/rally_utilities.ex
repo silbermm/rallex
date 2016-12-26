@@ -12,20 +12,28 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with Rallex.  If not, see <http://www.gnu.org/licenses/>.
-defmodule Rallex.Rally do
-  use GenServer
+defmodule Rallex.RallyUtilities do
+  require Logger
   @moduledoc """
-    Interact with Rally via thier [Lookback API](https://rally1.rallydev.com/analytics/doc/#/manual)
+    Utilities for interacting with Rally
   """
 
-  require Logger
-  alias Rallex.RallyUtilities
+  @doc """
+    Returns a map with the correct headers for Rally.
+  """
+  @spec headers(String.t) :: %{String.t => String.t}
+  def headers(rally_api_key) do
+    %{
+      "ZSESSIONID" => rally_api_key
+    }
+  end
 
-  @lookbackurl "https://rally1.rallydev.com/analytics/v2.0/service/rally/workspace/"
-
-  @doc false
-  def start_link(opts \\ []) do
-    GenServer.start_link(__MODULE__, :ok, opts)
+  @doc """
+    Produces an array formatted for hackney and Rally.
+  """
+  @spec cookie(String.t) :: []
+  def cookie(rally_api_key) do
+    [cookie: ["ZSESSIONID=#{rally_api_key}"]]
   end
 
 end

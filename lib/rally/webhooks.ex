@@ -22,7 +22,7 @@ defmodule Rallex.Webhooks do
   alias Rallex.WebhookRequest
   alias Rallex.WebhookRequest
   alias Rallex.WebhookResponse
-  alias Rallex.Rally
+  alias Rallex.RallyUtilities
 
   @webhookurl "https://rally1.rallydev.com/notifications/api/v2/webhook"
 
@@ -74,7 +74,7 @@ defmodule Rallex.Webhooks do
   @doc false
   def handle_call({:create, webhook, api_key}, _from, state) do
     post_body = Poison.encode!(webhook)
-    case HTTPoison.post(@webhookurl, post_body, [], hackney: Rally.cookie(api_key)) do
+    case HTTPoison.post(@webhookurl, post_body, [], hackney: RallyUtilities.cookie(api_key)) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         #TODO: decode into WebhookResponse
         response = Poison.decode(body, as: %WebhookResponse{})
@@ -89,7 +89,7 @@ defmodule Rallex.Webhooks do
 
   @doc false
   def handle_call({:delete, webhook_ref_url, api_key}, _from, state) do
-    case HTTPoison.delete(webhook_ref_url, [], hackney: Rally.cookie(api_key)) do
+    case HTTPoison.delete(webhook_ref_url, [], hackney: RallyUtilities.cookie(api_key)) do
       {:ok, %HTTPoison.Response{status_code: 200}} ->
         {:reply, {:ok, "Successfully deleted Webhook"}, state}
       {:ok, %HTTPoison.Response{status_code: 401}} ->
@@ -100,7 +100,7 @@ defmodule Rallex.Webhooks do
   end
 
   def handle_call({:list, page_size, start_page, api_key}, _from, state) do
-    case HTTPoison.get("#{@webhookurl}?pagesize=#{page_size}&start=#{start_page}", [], hackney: Rally.cookie(api_key)) do
+    case HTTPoison.get("#{@webhookurl}?pagesize=#{page_size}&start=#{start_page}", [], hackney: RallyUtilities.cookie(api_key)) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         response = Poison.decode(body, as: %{"Results" => [%WebhookResponse{}]})
         {:reply, response, state}

@@ -24,6 +24,7 @@ defmodule Rallex do
 
     children = [
       worker(Rallex.Webhooks, [[name: Rallex.Webhooks]]),
+      worker(Rallex.Rally, [[name: Rallex.Rally]]),
     ]
 
     opts = [strategy: :one_for_one, name: Rallex.Supervisor]
